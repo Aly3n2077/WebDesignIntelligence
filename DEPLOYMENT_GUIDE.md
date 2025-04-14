@@ -1,106 +1,221 @@
-# W&D Studios - Replit Deployment Guide
+# W&D Studios - Deployment Guide
 
-## Overview
-This guide covers deploying both the frontend and backend of the W&D Studios website on Replit's infrastructure.
+## Pre-Deployment Checklist
+- [ ] Test all features
+- [ ] Verify database connections
+- [ ] Check environment variables
+- [ ] Optimize assets
+- [ ] Review security settings
 
-## Prerequisites
-- Your project is already on Replit
-- PostgreSQL database is set up (automatically provided by Replit)
-- Environment variables are configured in Replit Secrets
+## Environment Setup
 
-## Frontend + Backend Deployment
-
-### 1. Environment Setup
-
-Configure these environment variables in Replit Secrets:
+1. Configure environment variables in Replit Secrets:
 ```
 NODE_ENV=production
-DATABASE_URL=your-replit-postgres-url
+DATABASE_URL=your-postgresql-url
 ```
 
-### 2. Build Configuration
-The project is already configured for production builds in `vite.config.ts` and will automatically:
-- Build the React frontend
-- Bundle the backend server
-- Optimize assets
+2. Database setup:
+- Use Replit's built-in PostgreSQL database
+- Or connect to external PostgreSQL service (See detailed options below)
+- Run migrations: `npm run db:push`
 
-### 3. Deployment Steps
+### Option 1: Neon PostgreSQL (Recommended)
 
-1. Open the Deployments tab in Replit
-2. Select "Autoscale" deployment type
-3. Configure deployment settings:
-   - Machine Power: Based on your needs (Medium recommended)
-   - Max Instances: Start with 1-3 based on expected traffic
+1. Create an account at [Neon](https://neon.tech/)
+2. Create a new PostgreSQL database project
+3. Obtain the connection string from the dashboard
+4. Add the connection string to your production environment variables as `DATABASE_URL`
 
-The deployment will automatically:
-- Build the frontend and backend
-- Run database migrations
-- Start the server on port 5000
-
-### 4. Verification Steps
-
-After deployment completes:
-1. Visit your deployed URL
-2. Test the contact form
-3. Verify all animations and interactions
-4. Check database connections
-5. Monitor error logs
-
-## Database Management
-
-Replit provides a PostgreSQL database that's automatically configured. To manage it:
-
-1. Access Database:
-   - Use Replit's built-in Database tab
-   - Or connect via provided credentials
-
-2. Migrations:
-   ```bash
-   npm run db:push
+### Option 2: Self-Hosted PostgreSQL
+1. Set up a PostgreSQL server (v14+ recommended)
+2. Create a database and user with appropriate permissions:
+   ```sql
+   CREATE DATABASE wandstudios;
+   CREATE USER wanduser WITH ENCRYPTED PASSWORD 'strong-password';
+   GRANT ALL PRIVILEGES ON DATABASE wandstudios TO wanduser;
    ```
+3. Configure your connection string:
+   ```
+   DATABASE_URL=postgresql://wanduser:strong-password@your-db-host:5432/wandstudios
+   ```
+4. Ensure your database is properly secured (firewall rules, SSL, etc.)
+
+### Database Migration
+Once your database is set up, run the migrations:
+
+```bash
+# Using the helper script
+node scripts/db-push.js
+
+# Or directly if environment is already configured
+npm run db:push
+```
+
+## Deployment Steps
+
+1. Push code to Replit repository
+
+2. In Replit:
+   - Configure environment variables in Secrets
+   - Use the deploy button
+   - Verify deployment logs
+
+3. Post-deployment:
+   - Test the live application
+   - Verify database connections
+   - Check form submissions
+   - Monitor error logs
+
+
+## Deployment Options
+### Option 1: Replit Deployment (Simplest)
+1. Push your code to a repository connected to your Replit account
+2. Configure environment variables in Replit's Secrets tab
+3. Use the deploy button in the Replit interface
+
+### Option 2: Traditional VPS Deployment
+1. Provision a VPS (Digital Ocean, AWS EC2, etc.)
+2. Clone your repository to the server
+3. Install Node.js (v18+)
+4. Install dependencies: `npm install --production`
+5. Build the application: `npm run build`
+6. Set up environment variables
+7. Start the server: `npm start`
+8. Configure a process manager (PM2, systemd) to keep the app running
+9. Set up a reverse proxy (Nginx, Apache) with SSL
+
+Example Nginx configuration:
+```nginx
+server {
+    listen 80;
+    server_name yourdomain.com;
+
+    # Redirect HTTP to HTTPS
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+
+server {
+    listen 443 ssl;
+    server_name yourdomain.com;
+
+    ssl_certificate /path/to/cert.pem;
+    ssl_certificate_key /path/to/key.pem;
+
+    location / {
+        proxy_pass http://localhost:5000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
+
+### Option 3: Containerized Deployment
+1. Create a Dockerfile in your project root:
+
+```dockerfile
+FROM node:18-alpine
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm ci --only=production
+
+COPY . .
+RUN npm run build
+
+ENV NODE_ENV=production
+ENV PORT=5000
+
+EXPOSE 5000
+
+CMD ["npm", "start"]
+```
+
+2. Build and push the Docker image:
+```bash
+docker build -t w-and-d-studios:latest .
+docker tag w-and-d-studios:latest yourregistry/w-and-d-studios:latest
+docker push yourregistry/w-and-d-studios:latest
+```
+
+3. Deploy to your container platform (Kubernetes, ECS, etc.)
+
+### Option 4: Serverless Deployment
+For frontend:
+1. Build the frontend: `npm run build`
+2. Deploy the `dist` directory to a static hosting provider (Vercel, Netlify, S3+CloudFront)
+
+For backend:
+1. Deploy the Express app to a serverless platform (Vercel Functions, AWS Lambda, Cloud Run)
+2. Configure environment variables in the platform's dashboard
+
 
 ## Monitoring & Maintenance
 
-1. Use Replit's monitoring tools:
-   - View application logs
-   - Monitor resource usage
-   - Track request metrics
+1. Regular checks:
+   - Application uptime
+   - Database performance
+   - Error logs
+   - Form submissions
 
-2. Regular maintenance:
-   - Keep dependencies updated
-   - Monitor error logs
+2. Updates:
+   - Keep dependencies updated: `npm audit fix`
+   - Monitor security advisories
    - Backup database regularly
 
-## Scaling
 
-Replit's Autoscale feature automatically handles:
-- Traffic spikes
-- Load balancing
-- Resource allocation
+## Security Best Practices
+Ensure your production deployment follows these security practices:
 
-## Security
+1. **Use HTTPS everywhere**
+   - Obtain an SSL certificate (Let's Encrypt is free)
+   - Configure your server to redirect HTTP to HTTPS
+   - Use HSTS headers to enforce HTTPS
 
-1. Environment Variables:
-   - Store sensitive data in Replit Secrets
-   - Never commit sensitive data
+2. **Implement proper headers**
+   ```javascript
+   // Add to your Express app
+   app.use(helmet()); // Requires installing the 'helmet' package
+   ```
 
-2. Database:
-   - Use parameterized queries (already implemented)
-   - Regular security updates
-   - Automated backups
+3. **Rate limiting**
+   - Implement rate limiting for API endpoints, especially for form submissions
+   - Consider using the 'express-rate-limit' package
+
+4. **Database security**
+   - Use a strong, unique password for your database
+   - Restrict network access to your database (VPC, firewall)
+   - Create least-privilege database users
+   - Regularly backup your database
+
+5. **Regular updates**
+   - Keep dependencies updated: `npm audit fix`
+   - Update Node.js to the latest LTS version
+   - Apply security patches to your server OS
+
+6. **Monitoring and logging**
+   - Implement application monitoring
+   - Set up error tracking
+   - Configure log rotation and retention
+
 
 ## Troubleshooting
 
 Common issues and solutions:
 
-1. Build Failures:
-   - Check build logs
-   - Verify dependencies
-   - Review environment variables
+1. Database Connection:
+   - Verify DATABASE_URL
+   - Check database permissions
+   - Review connection logs
 
-2. Runtime Errors:
-   - Check application logs
-   - Verify database connection
+2. Application Errors:
+   - Check Replit logs
+   - Verify environment variables
    - Review recent changes
 
 3. Performance Issues:
@@ -108,4 +223,8 @@ Common issues and solutions:
    - Check database queries
    - Review asset sizes
 
-For additional support, use Replit's built-in support resources.
+For additional help, use Replit's support resources or contact the development team.
+
+---
+
+This guide covers the essentials for deploying the W&D Studios website. For specific questions or advanced configurations, please refer to the documentation of the respective services or consult with the development team.
