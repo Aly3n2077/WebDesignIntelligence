@@ -7,73 +7,166 @@
 - [ ] Optimize assets
 - [ ] Review security settings
 
-## Prerequisites
-- Ensure all environment variables are set in Replit Secrets
-- Verify the application runs locally with `npm run dev`
-- Check that the database migrations are up to date
+## Environment Setup
 
-## Database Setup
-1. Replit automatically provides a PostgreSQL database
-2. The connection string is available as `DATABASE_URL` in your environment
-3. Run migrations before deployment:
+1. Configure environment variables in Replit Secrets:
+```
+NODE_ENV=production
+DATABASE_URL=your-postgresql-url
+```
+
+2. Database setup:
+- Use Replit's built-in PostgreSQL database
+- Or connect to external PostgreSQL service (See detailed options below)
+- Run migrations: `npm run db:push`
+
+### Option 1: Neon PostgreSQL (Recommended)
+
+1. Create an account at [Neon](https://neon.tech/)
+2. Create a new PostgreSQL database project
+3. Obtain the connection string from the dashboard
+4. Add the connection string to your production environment variables as `DATABASE_URL`
+
+### Option 2: Self-Hosted PostgreSQL
+1. Set up a PostgreSQL server (v14+ recommended)
+2. Create a database and user with appropriate permissions:
+   ```sql
+   CREATE DATABASE wandstudios;
+   CREATE USER wanduser WITH ENCRYPTED PASSWORD 'strong-password';
+   GRANT ALL PRIVILEGES ON DATABASE wandstudios TO wanduser;
+   ```
+3. Configure your connection string:
+   ```
+   DATABASE_URL=postgresql://wanduser:strong-password@your-db-host:5432/wandstudios
+   ```
+4. Ensure your database is properly secured (firewall rules, SSL, etc.)
+
+### Database Migration
+Once your database is set up, run the migrations:
+
 ```bash
+# Using the helper script
+node scripts/db-push.js
+
+# Or directly if environment is already configured
 npm run db:push
 ```
 
-## Frontend Build
-The frontend build is handled automatically during deployment:
-- Vite builds the React application
-- Static assets are optimized
-- CSS and JS are minified
-
-## Environment Configuration
-Required environment variables:
-- `NODE_ENV`: Set to "production"
-- `DATABASE_URL`: Automatically provided by Replit
-- Any additional secrets should be added via the Secrets tab
-
 ## Deployment Steps
-1. Open the "Deployment" tab in your Replit workspace
-2. Click "Deploy" to start the deployment process
-3. Replit will:
-   - Build the frontend
-   - Run database migrations
-   - Start the server
-   - Provide a public URL
 
-## Post-Deployment
-1. Verify the application loads at the provided URL
-2. Test the contact form submission
-3. Check database connections
-4. Monitor the deployment logs
+1. Push code to Replit repository
 
-## Performance Optimization
-- Enable caching where appropriate
-- Optimize image assets
-- Use CDN for large media files
-- Implement lazy loading for components
+2. In Replit:
+   - Configure environment variables in Secrets
+   - Use the deploy button
+   - Verify deployment logs
 
-## Monitoring
-- Use Replit's built-in logging
-- Monitor database performance
-- Track API response times
-- Set up error tracking
+3. Post-deployment:
+   - Test the live application
+   - Verify database connections
+   - Check form submissions
+   - Monitor error logs
 
-## Troubleshooting
-Common issues and solutions:
-1. Database connection errors:
-   - Verify DATABASE_URL is set correctly
-   - Check database migrations status
 
-2. Build failures:
-   - Review build logs
-   - Ensure all dependencies are installed
-   - Check for TypeScript errors
+## Deployment Options
+### Option 1: Replit Deployment (Simplest)
+1. Push your code to a repository connected to your Replit account
+2. Configure environment variables in Replit's Secrets tab
+3. Use the deploy button in the Replit interface
 
-3. Runtime errors:
-   - Check server logs
-   - Verify environment variables
-   - Test API endpoints
+### Option 2: Traditional VPS Deployment
+1. Provision a VPS (Digital Ocean, AWS EC2, etc.)
+2. Clone your repository to the server
+3. Install Node.js (v18+)
+4. Install dependencies: `npm install --production`
+5. Build the application: `npm run build`
+6. Set up environment variables
+7. Start the server: `npm start`
+8. Configure a process manager (PM2, systemd) to keep the app running
+9. Set up a reverse proxy (Nginx, Apache) with SSL
+
+Example Nginx configuration:
+```nginx
+server {
+    listen 80;
+    server_name yourdomain.com;
+
+    # Redirect HTTP to HTTPS
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+
+server {
+    listen 443 ssl;
+    server_name yourdomain.com;
+
+    ssl_certificate /path/to/cert.pem;
+    ssl_certificate_key /path/to/key.pem;
+
+    location / {
+        proxy_pass http://localhost:5000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
+
+### Option 3: Containerized Deployment
+1. Create a Dockerfile in your project root:
+
+```dockerfile
+FROM node:18-alpine
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm ci --only=production
+
+COPY . .
+RUN npm run build
+
+ENV NODE_ENV=production
+ENV PORT=5000
+
+EXPOSE 5000
+
+CMD ["npm", "start"]
+```
+
+2. Build and push the Docker image:
+```bash
+docker build -t w-and-d-studios:latest .
+docker tag w-and-d-studios:latest yourregistry/w-and-d-studios:latest
+docker push yourregistry/w-and-d-studios:latest
+```
+
+3. Deploy to your container platform (Kubernetes, ECS, etc.)
+
+### Option 4: Serverless Deployment
+For frontend:
+1. Build the frontend: `npm run build`
+2. Deploy the `dist` directory to a static hosting provider (Vercel, Netlify, S3+CloudFront)
+
+For backend:
+1. Deploy the Express app to a serverless platform (Vercel Functions, AWS Lambda, Cloud Run)
+2. Configure environment variables in the platform's dashboard
+
+
+## Monitoring & Maintenance
+
+1. Regular checks:
+   - Application uptime
+   - Database performance
+   - Error logs
+   - Form submissions
+
+2. Updates:
+   - Keep dependencies updated: `npm audit fix`
+   - Monitor security advisories
+   - Backup database regularly
 
 
 ## Security Best Practices
@@ -111,19 +204,26 @@ Ensure your production deployment follows these security practices:
    - Configure log rotation and retention
 
 
-## Monitoring & Maintenance
+## Troubleshooting
 
-1. Regular checks:
-   - Application uptime
-   - Database performance
-   - Error logs
-   - Form submissions
+Common issues and solutions:
 
-2. Updates:
-   - Keep dependencies updated: `npm audit fix`
-   - Monitor security advisories
-   - Backup database regularly
+1. Database Connection:
+   - Verify DATABASE_URL
+   - Check database permissions
+   - Review connection logs
 
+2. Application Errors:
+   - Check Replit logs
+   - Verify environment variables
+   - Review recent changes
+
+3. Performance Issues:
+   - Monitor resource usage
+   - Check database queries
+   - Review asset sizes
+
+For additional help, use Replit's support resources or contact the development team.
 
 ---
 
