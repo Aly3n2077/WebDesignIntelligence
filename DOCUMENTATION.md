@@ -51,6 +51,19 @@ W&D Studios (WebIt and DesignIt Studios Inc.) is a digital platform that showcas
 - PostgreSQL (v14+) - Only required for offline development
 - Git
 
+### Development Environments
+
+#### Standard Development Environment
+Follow the instructions below for a standard development setup.
+
+#### WAMP Development Environment
+If you prefer to use WAMP (Windows, Apache, MySQL, PHP) for development:
+1. Run the WAMP preparation script:
+   ```bash
+   node scripts/prepare-wamp.js
+   ```
+2. Follow the detailed instructions in `WAMP_GUIDE.md`
+
 ### Setup Instructions
 
 1. **Clone the repository**
@@ -113,6 +126,27 @@ The application uses Drizzle ORM with PostgreSQL. The schema is defined in `shar
 The application automatically detects the environment:
 - **Online (with DATABASE_URL)**: Connects to the provided PostgreSQL database (like Neon)
 - **Offline (without DATABASE_URL)**: Falls back to a local PostgreSQL instance
+
+### Exporting/Importing Database
+
+To migrate data between online and offline environments:
+
+1. **Export database for offline development**:
+   ```bash
+   node scripts/db-export.js
+   ```
+   This creates a SQL dump file and an import script for easy restoration.
+
+2. **Import database to local PostgreSQL**:
+   ```bash
+   # Using the generated import script
+   node db-backups/wandstudios-[timestamp]-import.js
+   
+   # Or directly with psql
+   psql -U postgres -d wandstudios -f db-backups/wandstudios-[timestamp].sql
+   ```
+
+For WAMP users, these operations are covered in the WAMP preparation script.
 
 ## Deployment
 
