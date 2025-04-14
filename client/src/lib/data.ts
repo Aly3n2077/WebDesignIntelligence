@@ -106,47 +106,47 @@ export const portfolioItems = [
 // Team members data
 export const teamMembers = [
   {
-    name: "Alex Morgan",
-    role: "Design Director",
-    bio: "Leading design innovation with 12+ years of experience in digital products.",
+    name: "Person 1",
+    role: "Design Lead",
+    bio: "Expert in creative direction and design strategy with focus on innovative solutions.",
+    image: "https://images.unsplash.com/photo-1579547945413-497e1b99dac0?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+    socials: {
+      linkedin: "#",
+      twitter: "#",
+      email: "person1@example.com"
+    }
+  },
+  {
+    name: "Person 2",
+    role: "Technical Lead",
+    bio: "Specialized in design systems implementation and technical architecture.",
+    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+    socials: {
+      linkedin: "#",
+      github: "#",
+      email: "person2@example.com"
+    }
+  },
+  {
+    name: "Person 3",
+    role: "UX Specialist",
+    bio: "Focused on creating intuitive and user-centered design experiences.",
     image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
     socials: {
       linkedin: "#",
       twitter: "#",
-      email: "alex@wandstudios.com"
+      email: "person3@example.com"
     }
   },
   {
-    name: "Sam Zhang",
-    role: "Lead Product Designer",
-    bio: "Crafting user-centered experiences that bridge beauty and functionality.",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+    name: "Person 4",
+    role: "Creative Developer",
+    bio: "Bridging the gap between design and development with creative solutions.",
+    image: "https://images.unsplash.com/photo-1564564321837-a57b7070ac4f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
     socials: {
-      linkedin: "#",
-      twitter: "#",
-      email: "sam@wandstudios.com"
-    }
-  },
-  {
-    name: "Jordan Lee",
-    role: "Design Systems Lead",
-    bio: "Building scalable design systems for enterprise applications.",
-    image: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-    socials: {
-      linkedin: "#",
       github: "#",
-      email: "jordan@wandstudios.com"
-    }
-  },
-  {
-    name: "Taylor Reed",
-    role: "Motion Design Lead",
-    bio: "Creating engaging animations and interactive experiences.",
-    image: "https://images.unsplash.com/photo-1531384441138-2736e62e0919?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-    socials: {
-      linkedin: "#",
       twitter: "#",
-      email: "taylor@wandstudios.com"
+      email: "person4@example.com"
     }
   }
 ];
