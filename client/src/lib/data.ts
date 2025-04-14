@@ -2,46 +2,71 @@
 // Services data
 export const services = [
   {
-    title: "Brand Design Systems",
-    description: "Creating cohesive design systems that scale with your brand, ensuring consistent user experiences across all touchpoints.",
-    icon: "Palette",
+    title: "Web Development",
+    description: "Building modern, responsive websites and web applications with cutting-edge technologies.",
+    icon: "Globe",
     gradient: "bg-gradient-to-r from-violet-600 to-indigo-600",
     features: [
-      "Custom design system creation",
-      "Component library development",
-      "Brand identity guidelines"
+      "Custom website development",
+      "Progressive web apps",
+      "E-commerce solutions"
     ]
   },
   {
-    title: "Digital Experience Design",
-    description: "Crafting immersive digital experiences that combine aesthetic beauty with intuitive functionality.",
-    icon: "Monitor",
+    title: "UI/UX Design",
+    description: "Creating beautiful and intuitive user interfaces that provide exceptional user experiences.",
+    icon: "PaintbrushVertical",
     gradient: "bg-gradient-to-r from-indigo-600 to-blue-600",
     features: [
-      "Interactive prototyping",
-      "Motion design integration",
-      "Cross-platform experiences"
+      "User interface design",
+      "User experience optimization",
+      "Design systems"
     ]
   },
   {
-    title: "Design-Led Development",
-    description: "Transforming pixel-perfect designs into performant, responsive web applications with modern technologies.",
-    icon: "Code",
+    title: "AI Integration",
+    description: "Implementing artificial intelligence solutions to automate and enhance business processes.",
+    icon: "Bot",
     gradient: "bg-gradient-to-r from-blue-600 to-cyan-600",
     features: [
-      "Responsive implementation",
-      "Animation integration",
-      "Performance optimization"
+      "AI-powered automation",
+      "Machine learning integration",
+      "Natural language processing"
     ]
   },
   {
-    title: "Design Innovation",
-    description: "Pushing boundaries with cutting-edge design solutions that incorporate the latest trends and technologies.",
-    icon: "Lightbulb",
+    title: "Mobile Development",
+    description: "Developing native and cross-platform mobile applications for iOS and Android.",
+    icon: "Smartphone",
     gradient: "bg-gradient-to-r from-cyan-600 to-teal-600",
     features: [
-      "Emerging tech integration",
-      "Interactive experiences",
+      "iOS app development",
+      "Android app development",
+      "Cross-platform solutions"
+    ]
+  },
+  {
+    title: "Digital Marketing",
+    description: "Driving growth through data-driven digital marketing strategies and campaigns.",
+    icon: "BarChart2",
+    gradient: "bg-gradient-to-r from-teal-600 to-emerald-600",
+    features: [
+      "SEO optimization",
+      "Social media marketing",
+      "Content strategy"
+    ]
+  },
+  {
+    title: "Business Automation",
+    description: "Streamlining business processes with custom automation solutions and integrations.",
+    icon: "Cog",
+    gradient: "bg-gradient-to-r from-emerald-600 to-green-600",
+    features: [
+      "Workflow automation",
+      "API integration",
+      "Business analytics"
+    ]
+  }
       "Innovation workshops"
     ]
   },
