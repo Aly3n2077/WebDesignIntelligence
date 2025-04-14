@@ -75,7 +75,7 @@ const ServiceCard = ({ service, index }: ServiceCardProps) => {
     <motion.div
       variants={slideUp}
       custom={index}
-      className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300"
+      className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02] group cursor-pointer"
     >
       <div className={`h-48 ${service.gradient} flex items-center justify-center`}>
         {getIcon(service.icon)}

@@ -63,7 +63,7 @@ const TeamMember = ({ member, index }: TeamMemberProps) => {
     <motion.div
       variants={slideUp}
       custom={index}
-      className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 text-center"
+      className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 text-center hover:scale-105 float-animation" //added class
     >
       <div className="h-64 overflow-hidden">
         <img 
