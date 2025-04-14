@@ -1,4 +1,3 @@
-import { Link } from "wouter";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,6 +8,34 @@ import {
   Facebook, 
   Layers 
 } from "lucide-react";
+
+// A custom Link component that handles smooth scrolling (same as in Header)
+const Link = ({ href, children, className, onClick }: { 
+  href: string; 
+  children: React.ReactNode; 
+  className?: string;
+  onClick?: () => void;
+}) => {
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    // If it's a hash link (starts with #), handle scroll behavior
+    if (href.startsWith('#')) {
+      e.preventDefault();
+      const targetId = href.substring(1);
+      const targetElement = document.getElementById(targetId);
+      
+      if (targetElement) {
+        targetElement.scrollIntoView({ behavior: 'smooth' });
+        if (onClick) onClick();
+      }
+    }
+  };
+
+  return (
+    <a href={href} className={className} onClick={handleClick}>
+      {children}
+    </a>
+  );
+};
 
 const Footer = () => {
   const services = [
