@@ -1,19 +1,7 @@
-# W&D Studios Website - Development & Deployment Documentation
+# W&D Studios Website Documentation
 
-This document provides comprehensive instructions for both local development and production deployment of the W&D Studios website.
-
-## Table of Contents
-1. [Project Overview](#project-overview)
-2. [Technology Stack](#technology-stack)
-3. [Local Development](#local-development)
-4. [Database Setup](#database-setup)
-5. [Deployment](#deployment)
-6. [Environment Variables](#environment-variables)
-7. [Security Considerations](#security-considerations)
-
-## Project Overview
-
-W&D Studios (WebIt and DesignIt Studios Inc.) is a digital platform that showcases AI and design services with a strong visual identity and parent company (MILLI) integration. The website features various sections including:
+## Overview
+A modern web application showcasing AI and design services with a strong visual identity and parent company (MILLI) integration. The website features various sections including:
 
 - Hero/Banner
 - About
@@ -23,48 +11,29 @@ W&D Studios (WebIt and DesignIt Studios Inc.) is a digital platform that showcas
 - Contact Form
 - Call to Action
 
-## Technology Stack
+## Tech Stack
 
 ### Frontend
-- React.js with TypeScript
+- React with TypeScript 
 - Tailwind CSS
 - Shadcn UI Components
-- Framer Motion for animations
-- TanStack React Query for data fetching
+- Framer Motion animations
+- TanStack Query
 - Wouter for routing
 
 ### Backend
-- Node.js with Express
-- PostgreSQL database
-- Drizzle ORM for database interactions
+- Node.js/Express
+- PostgreSQL with Drizzle ORM
 - TypeScript
 
-### Development Tools
-- Vite for frontend development
-- TSX for TypeScript execution
-- Drizzle Kit for schema migrations
-
-## Local Development
+## Development
 
 ### Prerequisites
 - Node.js (v18+)
 - PostgreSQL (v14+) - Only required for offline development
 - Git
 
-### Development Environments
-
-#### Standard Development Environment
-Follow the instructions below for a standard development setup.
-
-#### WAMP Development Environment
-If you prefer to use WAMP (Windows, Apache, MySQL, PHP) for development:
-1. Run the WAMP preparation script:
-   ```bash
-   node scripts/prepare-wamp.js
-   ```
-2. Follow the detailed instructions in `WAMP_GUIDE.md`
-
-### Setup Instructions
+### Setup Steps
 
 1. **Clone the repository**
    ```bash
@@ -77,46 +46,48 @@ If you prefer to use WAMP (Windows, Apache, MySQL, PHP) for development:
    npm install
    ```
 
-3. **Set up environment variables**
+3. **Configure environment variables**
    - Copy the example environment file:
    ```bash
    cp .env.example .env
    ```
    - Update the values in `.env` file according to your local setup
 
-4. **Configure local database (for offline development)**
-   - Create a PostgreSQL database:
-   ```bash
-   createdb wandstudios
-   ```
-   - Or using PostgreSQL commands:
-   ```sql
-   CREATE DATABASE wandstudios;
-   ```
-   - Update the DATABASE_URL in your .env file with your local PostgreSQL connection string:
-   ```
-   DATABASE_URL=postgresql://username:password@localhost:5432/wandstudios
-   ```
-
-5. **Run database migrations**
-   ```bash
-   npm run db:push
-   ```
-
-6. **Start the development server**
+4. **Start development server**
    ```bash
    npm run dev
    ```
    - This will start both the backend Express server and frontend Vite development server
-   - The application will be available at `http://localhost:5000`
+   - The application will be available at `http://0.0.0.0:5000`
 
-## Database Setup
+## Project Structure
 
-The application uses Drizzle ORM with PostgreSQL. The schema is defined in `shared/schema.ts`.
+### Frontend (/client)
+- `/src/components` - UI components
+- `/src/lib` - Utilities and data
+- `/src/pages` - Page components
+- `/src/hooks` - Custom React hooks
 
-### Schema Structure
-- `users`: User authentication table
-- `contact_submissions`: Stores contact form submissions
+### Backend (/server)
+- `index.ts` - Server entry point
+- `routes.ts` - API routes
+- `db.ts` - Database configuration
+- `config.ts` - Server configuration
+
+
+## Features
+- Responsive design
+- Form validation
+- Animation effects
+- Contact form with database storage
+- Team member profiles
+- Services showcase
+- Portfolio display
+
+## Database
+Uses PostgreSQL with Drizzle ORM for:
+- Contact form submissions
+- Data storage and retrieval
 
 ### Database Operations
 - **Running migrations**: `npm run db:push`
@@ -141,18 +112,16 @@ To migrate data between online and offline environments:
    ```bash
    # Using the generated import script
    node db-backups/wandstudios-[timestamp]-import.js
-   
+
    # Or directly with psql
    psql -U postgres -d wandstudios -f db-backups/wandstudios-[timestamp].sql
    ```
 
 For WAMP users, these operations are covered in the WAMP preparation script.
 
+
 ## Deployment
-
-### Replit Deployment
-
-The project is configured for seamless deployment on Replit:
+The application is configured for deployment on Replit:
 
 1. **Environment Setup**
    - Ensure PostgreSQL database is provisioned in Replit
@@ -197,6 +166,7 @@ The project is configured for seamless deployment on Replit:
 3. **Database Provisioning**
    - Create a PostgreSQL database in your preferred provider
    - Update the DATABASE_URL environment variable in your backend deployment
+
 
 ## Environment Variables
 
