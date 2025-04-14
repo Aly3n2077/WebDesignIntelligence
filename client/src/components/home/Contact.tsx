@@ -185,7 +185,16 @@ const Contact = () => {
                     <FormItem className="mb-6">
                       <FormLabel>Subject</FormLabel>
                       <FormControl>
-                        <Input placeholder="How can we help you?" {...field} />
+                        <select
+                          className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                          {...field}
+                        >
+                          <option value="General Inquiry">General Inquiry</option>
+                          <option value="Project Quote">Project Quote</option>
+                          <option value="Technical Support">Technical Support</option>
+                          <option value="Partnership">Partnership</option>
+                          <option value="Other">Other</option>
+                        </select>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -197,11 +206,11 @@ const Contact = () => {
                   name="message"
                   render={({ field }) => (
                     <FormItem className="mb-6">
-                      <FormLabel>Your Message</FormLabel>
+                      <FormLabel>Your Message (Optional)</FormLabel>
                       <FormControl>
                         <Textarea 
-                          placeholder="Please provide details about your project..." 
-                          rows={4} 
+                          placeholder="Type your message here or leave blank and we'll contact you..." 
+                          rows={2} 
                           {...field} 
                         />
                       </FormControl>
