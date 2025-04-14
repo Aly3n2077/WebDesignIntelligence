@@ -12,21 +12,21 @@ import {
 
 const Footer = () => {
   const services = [
-    { name: "Web Development", href: "/#services" },
-    { name: "UI/UX Design", href: "/#services" },
-    { name: "AI Integration", href: "/#services" },
-    { name: "Mobile App Development", href: "/#services" },
-    { name: "Digital Marketing", href: "/#services" },
-    { name: "Business Automation", href: "/#services" },
+    { name: "Web Development", href: "#services" },
+    { name: "UI/UX Design", href: "#services" },
+    { name: "AI Integration", href: "#services" },
+    { name: "Mobile App Development", href: "#services" },
+    { name: "Digital Marketing", href: "#services" },
+    { name: "Business Automation", href: "#services" },
   ];
 
   const quickLinks = [
-    { name: "About Us", href: "/#about" },
-    { name: "Portfolio", href: "/#portfolio" },
-    { name: "Our Team", href: "/#team" },
-    { name: "Careers", href: "/#team" },
+    { name: "About Us", href: "#about" },
+    { name: "Portfolio", href: "#portfolio" },
+    { name: "Our Team", href: "#team" },
+    { name: "Careers", href: "#team" },
     { name: "Blog", href: "/" },
-    { name: "Contact", href: "/#contact" },
+    { name: "Contact", href: "#contact" },
   ];
 
   const handleNewsletterSubmit = (e: React.FormEvent) => {

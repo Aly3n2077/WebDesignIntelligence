@@ -27,11 +27,11 @@ const Header = () => {
   };
 
   const navItems = [
-    { name: "Services", href: "/#services" },
-    { name: "Portfolio", href: "/#portfolio" },
-    { name: "About", href: "/#about" },
-    { name: "Team", href: "/#team" },
-    { name: "Contact", href: "/#contact" },
+    { name: "Services", href: "#services" },
+    { name: "Portfolio", href: "#portfolio" },
+    { name: "About", href: "#about" },
+    { name: "Team", href: "#team" },
+    { name: "Contact", href: "#contact" },
   ];
 
   return (
@@ -61,7 +61,7 @@ const Header = () => {
           </nav>
 
           <Button asChild className="hidden md:flex">
-            <Link href="/#contact">Get in Touch</Link>
+            <Link href="#contact">Get in Touch</Link>
           </Button>
 
           <Button
@@ -91,7 +91,7 @@ const Header = () => {
               </Link>
             ))}
             <Button asChild className="w-full">
-              <Link href="/#contact" onClick={closeMobileMenu}>Get in Touch</Link>
+              <Link href="#contact" onClick={closeMobileMenu}>Get in Touch</Link>
             </Button>
           </nav>
         </div>
