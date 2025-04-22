@@ -66,9 +66,10 @@ export const services = [
       "API integration",
       "Business analytics"
     ]
-  }
-      "Innovation workshops"
-    ]
+  },
+features: [
+   "Innovation workshops"
+   ]
   },
   {
     title: "Design Strategy",
