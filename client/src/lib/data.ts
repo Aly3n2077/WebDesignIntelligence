@@ -64,12 +64,9 @@ export const services = [
     features: [
       "Workflow automation",
       "API integration",
-      "Business analytics"
+      "Business analytics",
+      "Innovation workshops"
     ]
-  },
-features: [
-   "Innovation workshops"
-   ]
   },
   {
     title: "Design Strategy",
